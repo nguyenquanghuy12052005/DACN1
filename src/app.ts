@@ -13,13 +13,13 @@ import SocketService from "./core/socket/socket";
 class App {
   public app: express.Application;
   public port: string | number;
-  public production: Boolean;
-  private server: any; // HTTP server instance
+  public production: boolean;
+  private server: any;
 
   constructor(routes: Route[]) {
     this.app = express();
     this.port = process.env.PORT || 5000;
-    this.production = process.env.NODE_ENV == "production" ? true : false;
+    this.production = process.env.NODE_ENV === "production";
 
     this.connectToDatabase();
     this.initializeMiddleware();
@@ -27,29 +27,21 @@ class App {
     this.initializeErrorMiddleware();
   }
 
-  
-
- 
   public listen() {
     this.server = createServer(this.app);
-    
-    // Khởi tạo Socket.IO
     SocketService.initialize(this.server);
-
     this.server.listen(this.port, () => {
-      Logger.info(` Server đang chạy tại http://localhost:${this.port}`);
-      Logger.info(` Socket.IO ready on http://localhost:${this.port}`);
+      Logger.info(`Server running at http://localhost:${this.port}`);
+      Logger.info(`Socket.IO ready on http://localhost:${this.port}`);
     });
   }
 
-  // Duyệt hết các route truy cập vào
   private initializeRoutes(routes: Route[]) {
     routes.forEach((route) => {
-      this.app.use('/', route.router);
+      this.app.use(route.path as string, route.router);
     });
   }
 
-  // Bảo mật
   private initializeMiddleware() {
     if (this.production) {
       this.app.use(hpp());
@@ -60,7 +52,6 @@ class App {
       this.app.use(morgan('dev'));
       this.app.use(cors({ origin: true, credentials: true }));
     }
-
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
   }
@@ -69,19 +60,19 @@ class App {
     this.app.use(errorMiddleware);
   }
 
-  // Kết nối database
   private async connectToDatabase() {
     const connectString = process.env.MONGODB_URI;
     if (!connectString) {
-      Logger.error("connectString invalid");
+      Logger.error("MONGODB_URI is not defined");
       return;
     }
-    await mongoose.connect(connectString).catch((reason) => {
-      Logger.error(reason);
-    });
-    Logger.info(" Kết nối MongoDB Atlas thành công!");
+    try {
+      await mongoose.connect(connectString);
+      Logger.info("Connected to MongoDB Atlas successfully!");
+    } catch (error) {
+      Logger.error(error);
+    }
   }
-  
 }
 
 export default App;
