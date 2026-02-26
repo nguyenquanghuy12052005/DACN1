@@ -9,6 +9,7 @@ import { Logger } from './core/utils';
 import { errorMiddleware } from './core/middleware';
 import { createServer } from 'http';
 import SocketService from "./core/socket/socket";
+import { AppDataSource, initializeDatabase } from './core/database/postgreSQL';
 
 class App {
   public app: express.Application;
@@ -32,7 +33,6 @@ class App {
     SocketService.initialize(this.server);
     this.server.listen(this.port, () => {
       Logger.info(`Server running at http://localhost:${this.port}`);
-      Logger.info(`Socket.IO ready on http://localhost:${this.port}`);
     });
   }
 
@@ -44,7 +44,7 @@ class App {
 
   private initializeMiddleware() {
     if (this.production) {
-      this.app.use(hpp());
+      this.app.use(hpp());  
       this.app.use(helmet());
       this.app.use(morgan('combined'));
       this.app.use(cors({ origin: 'your.domain.com', credentials: true }));
@@ -60,19 +60,16 @@ class App {
     this.app.use(errorMiddleware);
   }
 
-  private async connectToDatabase() {
-    const connectString = process.env.MONGODB_URI;
-    if (!connectString) {
-      Logger.error("MONGODB_URI is not defined");
-      return;
-    }
-    try {
-      await mongoose.connect(connectString);
-      Logger.info("Connected to MongoDB Atlas successfully!");
-    } catch (error) {
-      Logger.error(error);
-    }
-  }
+private async connectToDatabase() {
+try {
+  await AppDataSource.initialize();
+  Logger.info("PostgreSQL connected successfully!");
+} catch (error) {
+  Logger.error("Failed to initialize PostgreSQL connection", error);
+}
+}
+
+
 }
 
 export default App;

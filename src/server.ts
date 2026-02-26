@@ -1,15 +1,17 @@
 import "reflect-metadata"; 
 import "dotenv/config";
 import App from "./app";
-import PostRoute from "./modules/posts/post.route";
-import ChatRoute from "./modules/chats/chat.route";
+import DepartmentRoute from "./modules/departments/department.route";
 
+import { validateEnv } from "./core/utils";
+import UserRoute from "./modules/users/user.route";
 
+validateEnv(); 
 
 
 const routes = [
-  new PostRoute(),
-  new ChatRoute(),
+    new DepartmentRoute(),
+    new UserRoute(),
 ];
 
 const app = new App(routes);
