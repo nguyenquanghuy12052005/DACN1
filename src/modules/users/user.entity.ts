@@ -20,11 +20,11 @@ export class UserEntity {
   @Column({ type: "text", nullable: true })
   avatar?: string;
 
-  @Column({
-    type: "varchar",
-    default: "active",
-  })
-  status?: string;
+@Column({
+  type: "varchar",
+  default: "active",
+})
+status!: "active" | "inactive" | "suspended" | "resigned";
 
   @Column({ name: "department_id", nullable: true })
   departmentId?: number;
@@ -32,9 +32,9 @@ export class UserEntity {
   @Column({ name: "position_id", nullable: true })
   positionId?: number;
 
-  @CreateDateColumn({ name: "created_at" })
-  createdAt?: Date;
+@CreateDateColumn({ name: "created_at" })
+createdAt!: Date;
 
-  @UpdateDateColumn({ name: "updated_at" })
-  updatedAt?: Date;
+@UpdateDateColumn({ name: "updated_at" })
+updatedAt!: Date;
 }

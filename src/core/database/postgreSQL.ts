@@ -26,7 +26,7 @@ export const initializeDatabase = async () => {
     await AppDataSource.initialize();
     Logger.info("PostgreSQL connected successfully!");
   } catch (error) {
-    Logger.error("✗ PostgreSQL connection failed", error);
+    Logger.error(" PostgreSQL connection failed", error);
     process.exit(1);
   }
 };
