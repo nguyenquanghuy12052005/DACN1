@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn,} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToOne,} from "typeorm";
+import { PositionEntity } from "./positions.entity";
+import { UserWalletEntity } from "./user_walets.entity";
 
 @Entity("users")
 export class UserEntity {
@@ -26,12 +28,20 @@ export class UserEntity {
 })
 status!: "active" | "inactive" | "suspended" | "resigned";
 
-  @Column({ name: "department_id", nullable: true })
-  departmentId?: number;
+  @Column({ name: "department_id", type: "integer" })
+  departmentId!: number;
 
-  @Column({ name: "position_id", nullable: true })
-  positionId?: number;
+  @Column({ name: "position_id",  type: "bigint" })
+  positionId!: number;
 
+  // Thiết lập quan hệ với Position
+  @ManyToOne(() => PositionEntity, (position) => position.users, { nullable: false })
+  @JoinColumn({ name: "position_id" })
+  position!: PositionEntity;
+
+  // Thiết lập quan hệ với Wallet
+  @OneToOne(() => UserWalletEntity , (wallet) => wallet.user)
+  wallet?: UserWalletEntity;
 @CreateDateColumn({ name: "created_at" })
 createdAt!: Date;
 

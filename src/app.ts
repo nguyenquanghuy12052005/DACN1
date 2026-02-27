@@ -10,6 +10,7 @@ import { errorMiddleware } from './core/middleware';
 import { createServer } from 'http';
 import SocketService from "./core/socket/socket";
 import { AppDataSource, initializeDatabase } from './core/database/postgreSQL';
+import { connectMongoDB } from './core/database/mongoDB';
 
 class App {
   public app: express.Application;
@@ -66,6 +67,13 @@ try {
   Logger.info("PostgreSQL connected successfully!");
 } catch (error) {
   Logger.error("Failed to initialize PostgreSQL connection", error);
+}
+
+try {
+  await connectMongoDB();    
+} catch (error) {
+  Logger.error("Failed to connect to MongoDB", error);
+    
 }
 }
 

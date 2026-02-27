@@ -4,6 +4,8 @@ import { DepartmentEntity } from "../../modules/departments/department.entity";
 import { Logger } from "../utils";
 import "dotenv/config";
 import { UserEntity } from "../../modules/users/user.entity";
+import { PositionEntity } from "../../modules/users/positions.entity";
+import { UserWalletEntity } from "../../modules/users/user_walets.entity";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -15,7 +17,8 @@ export const AppDataSource = new DataSource({
   entities: [
     DepartmentEntity,
     UserEntity,
-    // PositionEntity,
+    PositionEntity,
+    UserWalletEntity
   ],
   synchronize: process.env.DB_SYNC === "true",
   logging: process.env.DB_LOGGING === "true",

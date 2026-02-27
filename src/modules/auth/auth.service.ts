@@ -36,6 +36,8 @@ class AuthService {
     return user;
   }
 
+
+
   private createToken(user: IUser): TokenData {
     const dataInToken: DataStoredInToken = { id: user.id.toString() };
     const secret: string = process.env.JWT_SECRET!;
