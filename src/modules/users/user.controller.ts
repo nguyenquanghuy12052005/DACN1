@@ -1,10 +1,17 @@
 import { Request, Response, NextFunction } from "express";
-import UserService from "./user.service";
+import { injectable } from "inversify";
+import { UserService } from "./user.service";
 
-class UserController {
+@injectable()
+export class UserController {
+  constructor(
+    private userService: UserService
+  ) { }
+
+
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await UserService.createUser(req.body);
+      const user = await this.userService.createUser(req.body);
       res.status(201).json({
         message: "User created successfully",
         data: user,
@@ -16,7 +23,7 @@ class UserController {
 
   async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await UserService.getUserById(Number(req.params.id));  
+      const user = await this.userService.getUserById(Number(req.params.id));
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -32,7 +39,7 @@ class UserController {
 
   async getAllUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await UserService.getAllUsers();
+      const users = await this.userService.getAllUsers();
       res.json({
         message: "Users retrieved successfully",
         data: users,
@@ -44,7 +51,7 @@ class UserController {
 
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await UserService.updateUser(Number(req.params.id), req.body);
+      const user = await this.userService.updateUser(Number(req.params.id), req.body);
       res.json({
         message: "User updated successfully",
         data: user,
@@ -54,9 +61,9 @@ class UserController {
     }
   }
 
-  async deleteUser(req: Request, res: Response, next: NextFunction) { 
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
-      await UserService.deleteUser(Number(req.params.id));
+      await this.userService.deleteUser(Number(req.params.id));
       res.json({
         message: "User deleted successfully",
       });
@@ -66,5 +73,3 @@ class UserController {
   }
 
 }
-
-export default new UserController();

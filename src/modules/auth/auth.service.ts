@@ -1,3 +1,4 @@
+import { injectable } from 'inversify';
 import { httpException } from '../../core/exceptions';
 import { isEmptyObj } from '../../core/utils';
 import { DataStoredInToken, IUser, TokenData } from '../auth';
@@ -7,7 +8,8 @@ import LoginDto from './auth.dto';
 import { UserEntity } from '../users/user.entity';
 import { AppDataSource } from '../../core/database/postgreSQL';
 
-class AuthService {
+@injectable()
+export class AuthService {
   private userRepository = AppDataSource.getRepository(UserEntity);
 
   public async login(model: LoginDto): Promise<TokenData> {
@@ -48,5 +50,3 @@ class AuthService {
     };
   }
 }
-
-export default AuthService;

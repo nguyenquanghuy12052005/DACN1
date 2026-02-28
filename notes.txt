@@ -1,0 +1,13 @@
+Cập nhật branch đầu ngày:
+git checkout main
+git pull origin main
+git checkout BranchSieuCapVjpPro
+git merge main
+git add .
+git commit
+git push origin BranchSieuCapVjpPro
+
+Reset branch theo main:
+git checkout BranchSieuCapVjpPro
+git reset --hard main
+git push --force
