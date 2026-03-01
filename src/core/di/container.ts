@@ -24,6 +24,12 @@ modules.forEach((module) => {
       container.bind(controller).toSelf();
     });
   }
+  if (module.routes) {
+    module.routes.forEach((route: any) => {
+      container.bind(route).toSelf();
+    });
+  }
 });
+
 
 export { container };

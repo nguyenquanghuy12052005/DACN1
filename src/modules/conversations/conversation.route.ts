@@ -1,20 +1,23 @@
 import { Router } from "express";
-import { container } from "../../core/di/container";
+import { injectable } from "inversify";
 import { ConversationController } from "./conversation.controller";
 import { Route } from "../../core/interface";
+import { authMiddleware } from "../auth";
 
+@injectable()
 class ConversationRoute implements Route {
-    public path = "/conversations";
-    public router = Router();
-    private conversationController = container.get(ConversationController);
+  public path = "/conversations";
+  public router = Router();
 
-    constructor() {
-        this.initializeRoutes();
-    }
+  constructor(private conversationController: ConversationController) {
+    this.initializeRoutes();
+  }
 
-    private initializeRoutes() {
-        this.router.post("/", (req, res, next) => this.conversationController.createConversation(req, res, next));
-    }
+  private initializeRoutes() {
+    this.router.use(authMiddleware);
+    // Create conversation
+    this.router.post("/", (req, res, next) => this.conversationController.createConversation(req, res, next));
+  }
 }
 
 export default ConversationRoute;

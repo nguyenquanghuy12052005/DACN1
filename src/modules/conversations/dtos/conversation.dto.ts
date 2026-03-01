@@ -4,5 +4,5 @@ export class CreateConversationDto {
     name?: string;
     avatarUrl?: string;
   };
-  creatorId!: string;
+  participantIds!: string[];
 }

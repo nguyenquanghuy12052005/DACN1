@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { container } from "../../core/di/container";
+import { injectable } from "inversify";
 import { UserController } from "./user.controller";
 
+@injectable()
 class UserRoute {
   public path = "/users";
   public router = Router();
-  private userController = container.get(UserController);
 
-
-  constructor() {
+  constructor(private userController: UserController) {
     this.initializeRoutes();
   }
+
 
   private initializeRoutes() {
     this.router.post("/", (req, res, next) => this.userController.createUser(req, res, next));

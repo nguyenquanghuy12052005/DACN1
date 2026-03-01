@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { container } from "../../core/di/container";
+import { injectable } from "inversify";
 import { DepartmentController } from "./department.controller";
 
+@injectable()
 class DepartmentRoute {
   public path = "/departments";
   public router = Router();
-  private departmentController = container.get(DepartmentController);
 
-
-  constructor() {
+  constructor(private departmentController: DepartmentController) {
     this.initializeRoutes();
   }
+
 
   private initializeRoutes() {
     this.router.post("/", (req, res, next) => this.departmentController.create(req, res, next));

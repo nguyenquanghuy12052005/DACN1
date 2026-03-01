@@ -6,7 +6,8 @@ const participantSchema = new mongoose.Schema({
     ref: 'Conversation',
     required: true,
   },
-  senderId: { type: String, required: true },
+  // User ID from PostgreSQL
+  memberId: { type: Number, required: true },
   role: {
     type: String,
     enum: ['owner', 'administrator', 'member'],

@@ -1,0 +1,14 @@
+### Create conversation
+POST http://localhost:4000/conversations
+Content-Type: application/json
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjciLCJpYXQiOjE3NzIyNDgwODksImV4cCI6MTc3MjUwNzI4OX0.LOqbOXHtMZRukndKNS_NX9xARdI4VmToZzgf5ixrIKU
+
+{
+  "type": "group",
+  "metadata": {
+    "name": "Group hoc tap"
+  },
+  "participantIds": [
+    7
+  ]
+}

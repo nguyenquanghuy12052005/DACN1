@@ -1,13 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { injectable } from "inversify";
 import { ConversationService } from "./conversation.service";
-import { CreateConversationDto } from "./dtos/conversation.dto";
 
 @injectable()
 export class ConversationController {
   constructor(
     private conversationService: ConversationService
-  ) { }
+  ) {
+
+  }
 
   /**
    * Các bước tạo conversation:
@@ -18,7 +19,14 @@ export class ConversationController {
    * @param createConversationDto 
    */
   async createConversation(request: Request, response: Response, next: NextFunction) {
-    return this.conversationService.createConversation(request.body);
+    try {
+      await this.conversationService.createConversation(request.body);
+      return response.json({
+        message: "Done",
+      })
+    } catch (exception) {
+      return response.json(exception);
+    }
   }
 
   async joinConversation() {

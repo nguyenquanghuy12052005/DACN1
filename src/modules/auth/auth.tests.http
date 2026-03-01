@@ -1,0 +1,12 @@
+# Auth user
+POST http://localhost:4000/auth
+Content-Type: application/json
+
+{
+  "email": "vongocbao1392005@gmail.com",
+  "password": "1234567890"
+}
+
+### Get auth user
+GET http://localhost:4000/auth
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjciLCJpYXQiOjE3NzIyNDgwODksImV4cCI6MTc3MjUwNzI4OX0.LOqbOXHtMZRukndKNS_NX9xARdI4VmToZzgf5ixrIKU
